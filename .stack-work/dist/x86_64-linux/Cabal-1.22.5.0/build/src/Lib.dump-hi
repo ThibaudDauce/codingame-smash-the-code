@@ -1,0 +1,257 @@
+
+==================== FINAL INTERFACE ====================
+2016-04-30 18:32:22.424968 UTC
+
+interface smash_9zgRM7VVSrM9VOCDLt75FU:Lib 7103
+  interface hash: e0361680306983af48a120cb3a117af6
+  ABI hash: 65c9fd49762863ec9e1ef8c7a054e293
+  export-list hash: 20ebf301c06ae16301f8fda11caf5765
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: 962af636f8e927040c7daa9c21457292
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Lib.ajouter
+  Lib.ajouterDeuxBlocs
+  Lib.premiereLigneVide
+  Lib.Colonne
+  Lib.Couleur{Lib.Bleu Lib.Jaune Lib.Rose Lib.Rouge Lib.Vert}
+  Lib.Grille
+  Lib.Ligne
+module dependencies:
+package dependencies: array-0.5.1.0@array_67iodizgJQIIxYVTp4emlA
+                      base-4.8.2.0* containers-0.5.6.2@conta_2C3ZI8RgPO2LBMidXKTvIU
+                      deepseq-1.4.1.1@deeps_6vMKxt5sPFR0XsbRWvvq59 ghc-prim-0.4.0.0
+                      integer-gmp-1.0.0.0
+orphans: base-4.8.2.0:GHC.Base base-4.8.2.0:GHC.Float
+family instance modules: base-4.8.2.0:Control.Applicative
+                         base-4.8.2.0:Data.Either base-4.8.2.0:Data.Functor.Identity
+                         base-4.8.2.0:Data.Monoid base-4.8.2.0:Data.Type.Equality
+                         base-4.8.2.0:Data.Void base-4.8.2.0:GHC.Exts
+                         base-4.8.2.0:GHC.Generics
+                         containers-0.5.6.2@conta_2C3ZI8RgPO2LBMidXKTvIU:Data.Map.Base
+                         containers-0.5.6.2@conta_2C3ZI8RgPO2LBMidXKTvIU:Data.Set.Base
+import  -/  base-4.8.2.0:GHC.Base 1db77db5dae73d8c424c85b09fbadb89
+import  -/  base-4.8.2.0:GHC.Num 9f42750c866f5832ca565146bd660c60
+import  -/  base-4.8.2.0:GHC.Show 0e1d8380a8fb0cfb07ebeda3b70cbf38
+import  -/  base-4.8.2.0:Prelude 694dcaf039efe62df1c44834e2dbd2fb
+import  -/  containers-0.5.6.2@conta_2C3ZI8RgPO2LBMidXKTvIU:Data.Map 1800ccac43fd924c376b60eac12f4d04
+import  -/  containers-0.5.6.2@conta_2C3ZI8RgPO2LBMidXKTvIU:Data.Map.Base 61f4bf9a28a6b2eb8805b671ced219c1
+import  -/  ghc-prim-0.4.0.0:GHC.Classes e1f4ff80f7b5262008a595d29986fb18
+d9c942d61bd38cd82d16a53a53baffbf
+  $fEqCouleur :: GHC.Classes.Eq Lib.Couleur
+  DFunId[0]
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Lib.Couleur Lib.$fEqCouleur_$c== Lib.$fEqCouleur_$c/= -}
+d9c942d61bd38cd82d16a53a53baffbf
+  $fEqCouleur_$c/= :: Lib.Couleur -> Lib.Couleur -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
+     Unfolding: (\ a :: Lib.Couleur b :: Lib.Couleur ->
+                 case a of wild {
+                   Lib.Jaune
+                   -> case b of wild1 {
+                        DEFAULT -> GHC.Types.True Lib.Jaune -> GHC.Types.False }
+                   Lib.Rouge
+                   -> case b of wild1 {
+                        DEFAULT -> GHC.Types.True Lib.Rouge -> GHC.Types.False }
+                   Lib.Bleu
+                   -> case b of wild1 {
+                        DEFAULT -> GHC.Types.True Lib.Bleu -> GHC.Types.False }
+                   Lib.Vert
+                   -> case b of wild1 {
+                        DEFAULT -> GHC.Types.True Lib.Vert -> GHC.Types.False }
+                   Lib.Rose
+                   -> case b of wild1 {
+                        DEFAULT -> GHC.Types.True Lib.Rose -> GHC.Types.False } }) -}
+d9c942d61bd38cd82d16a53a53baffbf
+  $fEqCouleur_$c== :: Lib.Couleur -> Lib.Couleur -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
+     Unfolding: (\ ds :: Lib.Couleur ds1 :: Lib.Couleur ->
+                 case ds of wild {
+                   Lib.Jaune
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lib.Jaune -> GHC.Types.True }
+                   Lib.Rouge
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lib.Rouge -> GHC.Types.True }
+                   Lib.Bleu
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lib.Bleu -> GHC.Types.True }
+                   Lib.Vert
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lib.Vert -> GHC.Types.True }
+                   Lib.Rose
+                   -> case ds1 of wild1 {
+                        DEFAULT -> GHC.Types.False Lib.Rose -> GHC.Types.True } }) -}
+d9c942d61bd38cd82d16a53a53baffbf
+  $fShowCouleur :: GHC.Show.Show Lib.Couleur
+  DFunId[0]
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Lib.Couleur
+                  Lib.$fShowCouleur_$cshowsPrec
+                  Lib.$fShowCouleur_$cshow
+                  Lib.$fShowCouleur_$cshowList -}
+2ff5d560c7ccb5a79a81ff7eaadc9802
+  $fShowCouleur1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "Rose"#) -}
+9210b8816d5137e37a78fe8609f793cc
+  $fShowCouleur2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "Vert"#) -}
+98161a1ea2626340e576d3b371247de3
+  $fShowCouleur3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "Bleu"#) -}
+f720f0b281049a48a6b66a0fc45116da
+  $fShowCouleur4 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "Rouge"#) -}
+03038aac80e0de73bce821b5cabf4116
+  $fShowCouleur5 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "Jaune"#) -}
+d9c942d61bd38cd82d16a53a53baffbf
+  $fShowCouleur_$cshow :: Lib.Couleur -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ x :: Lib.Couleur ->
+                 Lib.$fShowCouleur_$cshowsPrec
+                   GHC.Show.shows18
+                   x
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+d9c942d61bd38cd82d16a53a53baffbf
+  $fShowCouleur_$cshowList :: [Lib.Couleur] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__ @ Lib.Couleur Lib.$w$cshowsPrec) -}
+d9c942d61bd38cd82d16a53a53baffbf
+  $fShowCouleur_$cshowsPrec ::
+    GHC.Types.Int -> Lib.Couleur -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <L,A><S,1*U><L,1*U>, Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, True)
+                (\ w :: GHC.Types.Int w1 :: Lib.Couleur w2 :: GHC.Base.String ->
+                 Lib.$w$cshowsPrec w1 w2) -}
+bb262fcfcf27888a810be75a3dbe44b1
+  $sinsert_$sgo10 ::
+    (Lib.Colonne, Lib.Ligne)
+    -> a1
+    -> Data.Map.Base.Map (Lib.Colonne, Lib.Ligne) a1
+    -> Data.Map.Base.Map (Lib.Colonne, Lib.Ligne) a1
+  {- Arity: 3, Strictness: <S,1*U(U(U),U(U))><L,U><S,1*U>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, False)
+                (\ @ a1
+                   w :: (Lib.Colonne, Lib.Ligne)
+                   w1 :: a1
+                   w2 :: Data.Map.Base.Map (Lib.Colonne, Lib.Ligne) a1 ->
+                 case w of ww { (,) ww1 ww2 -> Lib.$w$sgo10 @ a1 ww1 ww2 w1 w2 }) -}
+d9c942d61bd38cd82d16a53a53baffbf
+  $w$cshowsPrec :: Lib.Couleur -> GHC.Base.String -> GHC.Base.String
+  {- Arity: 2, Strictness: <S,1*U><L,1*U>, Inline: [0],
+     Unfolding: (\ w :: Lib.Couleur w1 :: GHC.Base.String ->
+                 case w of wild {
+                   Lib.Jaune -> GHC.Base.++ @ GHC.Types.Char Lib.$fShowCouleur5 w1
+                   Lib.Rouge -> GHC.Base.++ @ GHC.Types.Char Lib.$fShowCouleur4 w1
+                   Lib.Bleu -> GHC.Base.++ @ GHC.Types.Char Lib.$fShowCouleur3 w1
+                   Lib.Vert -> GHC.Base.++ @ GHC.Types.Char Lib.$fShowCouleur2 w1
+                   Lib.Rose
+                   -> GHC.Base.++ @ GHC.Types.Char Lib.$fShowCouleur1 w1 }) -}
+76260284841c5f8065ddc8582890a2da
+  $w$sgo10 ::
+    Lib.Colonne
+    -> Lib.Ligne
+    -> a1
+    -> Data.Map.Base.Map (Lib.Colonne, Lib.Ligne) a1
+    -> Data.Map.Base.Map (Lib.Colonne, Lib.Ligne) a1
+  {- Arity: 4, Strictness: <L,U(U)><L,U(U)><L,U><S,1*U>,
+     Inline: [0] -}
+d38be4bc7bf7adf568d57a31e7713df2
+  $wpoly_go10 ::
+    Lib.Colonne
+    -> Lib.Ligne
+    -> Data.Map.Base.Map (Lib.Colonne, Lib.Ligne) a
+    -> GHC.Base.Maybe a
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,U(U)><L,U(U)><S,1*U>,
+     Inline: [0] -}
+c7c490d517f52fe9df07b0c7e7d3f4d3
+  $wtestLigne ::
+    Data.Map.Base.Map (Lib.Colonne, Lib.Ligne) Lib.Couleur
+    -> Lib.Colonne -> GHC.Prim.Int# -> GHC.Prim.Int#
+  {- Arity: 3, HasNoCafRefs, Strictness: <S,U><L,U(U)><L,U>,
+     Inline: [0] -}
+39c5be58476ed4834986aa35735a8501
+  type Colonne = GHC.Types.Int
+d9c942d61bd38cd82d16a53a53baffbf
+  data Couleur = Jaune | Rouge | Bleu | Vert | Rose
+    Promotable
+1366716d22445ee503db84923e4c9784
+  type Grille =
+    Data.Map.Base.Map (Lib.Colonne, Lib.Ligne) Lib.Couleur
+078cdac838634693b3c8286e1125c6fe
+  type Ligne = GHC.Types.Int
+8d590eb215eec795762d8bc79a97596b
+  ajouter :: Lib.Grille -> Lib.Colonne -> Lib.Couleur -> Lib.Grille
+  {- Arity: 3, Strictness: <S,U><L,U(U)><L,U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ grille :: Lib.Grille
+                   colonne :: Lib.Colonne
+                   couleur :: Lib.Couleur ->
+                 Lib.$sinsert_$sgo10
+                   @ Lib.Couleur
+                   (colonne, Lib.ajouter_testLigne grille colonne Lib.ajouter1)
+                   couleur
+                   grille) -}
+fcb67000f5d632e49cfef99ce20ef7b4
+  ajouter1 :: GHC.Types.Int
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 1) -}
+f9d232b9ab1e20e3d589749236d41add
+  ajouterDeuxBlocs ::
+    Lib.Grille -> Lib.Colonne -> Lib.Couleur -> Lib.Grille
+  {- Arity: 3, Strictness: <S,U><L,U(U)><L,U>,
+     Unfolding: (\ grille :: Lib.Grille
+                   colonne :: Lib.Colonne
+                   couleur :: Lib.Couleur ->
+                 let {
+                   premiereLigneVide' :: Lib.Ligne
+                   = case Lib.$wtestLigne grille colonne 1 of ww { DEFAULT ->
+                     GHC.Types.I# ww }
+                 } in
+                 Lib.$w$sgo10
+                   @ Lib.Couleur
+                   colonne
+                   premiereLigneVide'
+                   couleur
+                   (Lib.$w$sgo10
+                      @ Lib.Couleur
+                      colonne
+                      (case premiereLigneVide' of wild { GHC.Types.I# x ->
+                       GHC.Types.I# (GHC.Prim.+# x 1) })
+                      couleur
+                      grille)) -}
+2c85f3c679d71b79ae0270450974793d
+  ajouter_testLigne ::
+    Data.Map.Base.Map (Lib.Colonne, Lib.Ligne) Lib.Couleur
+    -> Lib.Colonne -> Lib.Ligne -> Lib.Ligne
+  {- Arity: 3, HasNoCafRefs, Strictness: <S,U><L,U(U)><S,U(U)>m,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, False)
+                (\ w :: Data.Map.Base.Map (Lib.Colonne, Lib.Ligne) Lib.Couleur
+                   w1 :: Lib.Colonne
+                   w2 :: Lib.Ligne ->
+                 case w2 of ww { GHC.Types.I# ww1 ->
+                 case Lib.$wtestLigne w w1 ww1 of ww2 { DEFAULT ->
+                 GHC.Types.I# ww2 } }) -}
+cf0bfe007256c5a0859112a888d57b12
+  premiereLigneVide :: Lib.Grille -> Lib.Colonne -> Lib.Ligne
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,U><L,U(U)>m,
+     Unfolding: InlineRule (2, True, False)
+                (\ grille :: Lib.Grille colonne :: Lib.Colonne ->
+                 Lib.ajouter_testLigne grille colonne Lib.ajouter1) -}
+instance GHC.Classes.Eq [Lib.Couleur] = Lib.$fEqCouleur
+instance GHC.Show.Show [Lib.Couleur] = Lib.$fShowCouleur
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: safe
+require own pkg trusted: False
+
