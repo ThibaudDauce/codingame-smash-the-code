@@ -13,35 +13,34 @@ main = hspec $ do
         it "Pour une colonne 1 avec un élément, la hauteur de la colonne 1 est 0" $ do
             (hauteur [[Bleu], [], [], [], [], []] 1) `shouldBe` 0
     describe "Ajout de bloc" $ do
-        it "Si on ajoute un bloc, la hauteur doit être 1" $ do
-            (hauteur (ajouter 0 Bleu [[], [], [], [], [], []]) 0) `shouldBe` 1
-        it "Si on ajoute deux blocs, la hauteur doit être 2" $ do
-            (hauteur (ajouterDeuxBlocs 0 Bleu [[], [], [], [], [], []]) 0) `shouldBe` 2
         it "Si on ajoute un bloc, il doit être présent" $ do
-            (ajouter 5 Bleu [[], [], [], [], [], []]) `shouldBe` [[], [], [], [], [], [Bleu]]
+            (ajouter 5 Bleu [[], [], [], [], [], []]) `shouldBe` (Just [[], [], [], [], [], [Bleu]])
         it "Si on ajoute deux blocs, ils doivent être présents" $ do
-            (ajouterDeuxBlocs 5 Bleu [[], [], [], [], [], []]) `shouldBe` [[], [], [], [], [], [Bleu, Bleu]]
+            (ajouterDeuxBlocs 5 Bleu [[], [], [], [], [], []]) `shouldBe` (Just [[], [], [], [], [], [Bleu, Bleu]])
         it "Si on ajoute un bloc sur un existant, il doit être au dessus" $ do
-            (ajouter 5 Vert [[], [], [], [], [], [Bleu]]) `shouldBe` [[], [], [], [], [], [Bleu, Vert]]
+            (ajouter 5 Vert [[], [], [], [], [], [Bleu]]) `shouldBe` (Just [[], [], [], [], [], [Bleu, Vert]])
+    describe "Ajouter paire" $ do
+        it "Retourne nothing si on sort à droite" $ do
+            (ajouterPaire 5 '0' (Vert, Vert) [[], [], [], [], [], []]) `shouldBe` Nothing
     describe "Bloc marque de la même couleur" $ do
         it "Ne change pas la grille si l'on demande une colonne inférieure à 0" $ do
-            (blocEstNonMarqueEtMemeCouleur Bleu (-1) 2 grilleComplexeMaybe) `shouldBe` grilleComplexeMaybe
+            (blocEstNonMarqueEtMemeCouleur Bleu (-1) 2 grilleComplexeMaybe) `shouldBe` (False, grilleComplexeMaybe)
         it "Ne change pas la grille si l'on demande une ligne inférieure à 0" $ do
-            (blocEstNonMarqueEtMemeCouleur Bleu 2 (-1) grilleComplexeMaybe) `shouldBe` grilleComplexeMaybe
+            (blocEstNonMarqueEtMemeCouleur Bleu 2 (-1) grilleComplexeMaybe) `shouldBe` (False, grilleComplexeMaybe)
         it "Ne change pas la grille si l'on demande une colonne supérieure à 6" $ do
-            (blocEstNonMarqueEtMemeCouleur Bleu 6 2 grilleComplexeMaybe) `shouldBe` grilleComplexeMaybe
+            (blocEstNonMarqueEtMemeCouleur Bleu 6 2 grilleComplexeMaybe) `shouldBe` (False, grilleComplexeMaybe)
         it "Ne change pas la grille si l'on demande une ligne supérieure à sa hauteur" $ do
-            (blocEstNonMarqueEtMemeCouleur Bleu 0 3 grilleComplexeMaybe) `shouldBe` grilleComplexeMaybe
+            (blocEstNonMarqueEtMemeCouleur Bleu 0 3 grilleComplexeMaybe) `shouldBe` (False, grilleComplexeMaybe)
         it "Ne change pas la grille si l'on demande une ligne vide" $ do
-            (blocEstNonMarqueEtMemeCouleur Bleu 5 0 grilleComplexeMaybe) `shouldBe` grilleComplexeMaybe
+            (blocEstNonMarqueEtMemeCouleur Bleu 5 0 grilleComplexeMaybe) `shouldBe` (False, grilleComplexeMaybe)
         it "Ne change rien si la marque est déjà posée et que la couleur correspond" $ do
-            (blocEstNonMarqueEtMemeCouleur Vert 0 0 (modifierElement (const (True, Just Vert)) 0 0 grilleComplexeMaybe)) `shouldBe` (modifierElement (const (True, Just Vert)) 0 0 grilleComplexeMaybe)
+            (blocEstNonMarqueEtMemeCouleur Vert 0 0 (modifierElement (const (True, Just Vert)) 0 0 grilleComplexeMaybe)) `shouldBe` (False, (modifierElement (const (True, Just Vert)) 0 0 grilleComplexeMaybe))
         it "Ne change rien si la marque est déjà posée et que la couleur ne correspond pas" $ do
-            (blocEstNonMarqueEtMemeCouleur Vert 0 0 (modifierElement (const (True, Just Bleu)) 0 0 grilleComplexeMaybe)) `shouldBe` (modifierElement (const (True, Just Bleu)) 0 0 grilleComplexeMaybe)
+            (blocEstNonMarqueEtMemeCouleur Vert 0 0 (modifierElement (const (True, Just Bleu)) 0 0 grilleComplexeMaybe)) `shouldBe` (False, (modifierElement (const (True, Just Bleu)) 0 0 grilleComplexeMaybe))
         it "Ne change rien si la couleur n'est pas bonne" $ do
-            (blocEstNonMarqueEtMemeCouleur Vert 0 0 grilleComplexeMaybe) `shouldBe` grilleComplexeMaybe
+            (blocEstNonMarqueEtMemeCouleur Vert 0 0 grilleComplexeMaybe) `shouldBe` (False, grilleComplexeMaybe)
         it "Change la marque et le maybe si la couleur est bonne" $ do
-            (blocEstNonMarqueEtMemeCouleur Vert 0 2 grilleComplexeMaybe) `shouldBe` (modifierElement (const (True, Nothing)) 0 2 grilleComplexeMaybe)
+            (blocEstNonMarqueEtMemeCouleur Vert 0 2 grilleComplexeMaybe) `shouldBe` (False, (modifierElement (const (True, Nothing)) 0 2 grilleComplexeMaybe))
     describe "Parcourir la grille" $ do
         it "Marque le vert seulement" $ do
             (parcourir Vert 0 2 (supprimerBloc 0 2 grilleComplexeMaybe) 10) `shouldBe` (supprimerBloc 0 2 grilleComplexeMaybe, 10)
@@ -70,13 +69,18 @@ main = hspec $ do
             (simplifierGrille grilleCrane) `shouldBe` (grilleCraneSimplifiee, 4)
     describe "Calculer le score" $ do
         it "Score grille1 bonne colonne" $ do
-            (snd $ simplifierGrille (ajouterDeuxBlocs 4 Rose grille1)) `shouldBe` 4
+            (fmap (snd . simplifierGrille) (ajouterDeuxBlocs 4 Rose grille1)) `shouldBe` (Just 4)
         it "Score grille1 mauvaise colonne" $ do
-            (snd $ simplifierGrille (ajouterDeuxBlocs 5 Rose grille1)) `shouldBe` 0
+            (fmap (snd . simplifierGrille) (ajouterDeuxBlocs 5 Rose grille1)) `shouldBe` (Just 0)
+        it "Score nothing" $ do
+            (getScore 5 (Vert, Vert) '0' grille1) `shouldBe` (grille1, (-1000))
     describe "Choisir colonne" $ do
         it "Grille example 1" $ do
-            (choisirColonne Rose grille1) `shouldBe` 4
-
+            (choisir (Rose, Rose) grille1) `shouldBe` (4, '3')
+        it "Grille example 2" $ do
+            (choisirSurPlusieursTours [(Bleu, Bleu), (Bleu, Bleu)] grille2) `shouldBe` (2, '3')
+        it "Grille example 3" $ do
+            (choisir (Bleu, Bleu) grille3) `shouldBe` (1, '0')
 
 grilleComplexe :: [[Couleur]]
 grilleComplexe = [[Bleu, Rouge, Vert], [Bleu, Rouge], [Bleu, Rouge, Bleu, Rouge], [Bleu, Bleu, Bleu], [], []]
@@ -110,3 +114,9 @@ grilleCrane = [[Crane], [], [Crane, Crane], [Rouge], [Rouge, Rouge, Rouge], []]
 
 grilleCraneSimplifiee :: [[Couleur]]
 grilleCraneSimplifiee = [[Crane], [], [Crane], [], [], []]
+
+grille2 :: [[Couleur]]
+grille2 = [[], [Bleu, Bleu], [Jaune, Jaune], [], [], []]
+
+grille3 :: [[Couleur]]
+grille3 = [[Bleu], [], [], [Bleu], [], []]
