@@ -24,7 +24,7 @@ hauteur grille colonne
 
 replaceNth :: Int -> (a -> a) -> [a] -> [a]
 replaceNth n updateFunction (x:xs)
-    | n == 0 = (updateFunction x):xs
+    | n == 0 = updateFunction x:xs
     | otherwise = x:replaceNth (n-1) updateFunction xs
 
 choix :: [(Colonne, Rotation)]
@@ -34,12 +34,12 @@ ajouter :: Colonne -> Couleur -> Grille -> Maybe Grille
 ajouter colonne couleur grille
     | colonne < 0 = Nothing
     | colonne > 5 = Nothing
-    | otherwise = Just $ replaceNth colonne (const $ reverse (couleur:(reverse $ grille !! colonne))) grille
+    | otherwise = Just $ replaceNth colonne (const $ reverse (couleur : reverse (grille !! colonne))) grille
 
 construireCouleursSuivante :: IO [Paire]
 construireCouleursSuivante = do
     couleursSuivantes <- replicateM 8 getLine
-    return (map (\x -> (charVersCouleur $ x!!0, charVersCouleur $ x!!2)) couleursSuivantes)
+    return (map (\x -> (charVersCouleur $ head x, charVersCouleur $ x!!2)) couleursSuivantes)
 
 construireGrille :: IO Grille
 construireGrille = do
@@ -57,11 +57,11 @@ getScoreSurPlusieursTours colonne rotation paire (paireSuivante:pairesSuivantes)
 getScore :: Colonne -> Paire -> Rotation -> Grille -> (Grille, Int)
 getScore colonne paire rotation grille
     | score < (-100) = (grille, -1000)
-    | otherwise = (grilleSuivante, 2 ^ score - 2 ^ (hauteur grilleSuivante colonne) - (hauteur grilleSuivante (colonne - 1)) - (hauteur grilleSuivante (colonne + 1)))
+    | otherwise = (grilleSuivante, 2 ^ score - 2 ^ hauteur grilleSuivante colonne - hauteur grilleSuivante (colonne - 1) - hauteur grilleSuivante (colonne + 1))
     where
         (grilleSuivante, score) = case ajouterPaire colonne rotation paire grille of
             Just grille' -> simplifierGrille grille'
-            Nothing -> (grille, (-1000))
+            Nothing -> (grille, -1000)
 
 choisir :: Paire -> Grille -> (Colonne, Rotation)
 choisir paire grille = maximumBy compare' choix
@@ -76,15 +76,14 @@ choisirSurPlusieursTours (paire:pairesSuivantes) grille = maximumBy compare' cho
         getScore' (colonne, rotation) = getScoreSurPlusieursTours colonne rotation paire pairesSuivantes grille
 
 ajouterPlusieursChainesDeCaracteres :: [String] -> Grille -> Grille
-ajouterPlusieursChainesDeCaracteres [] grille = grille
-ajouterPlusieursChainesDeCaracteres (x:xs) grille = ajouterPlusieursChainesDeCaracteres xs $ ajouterChaineDeCaractere x grille
+ajouterPlusieursChainesDeCaracteres xs grille = foldl (flip ajouterChaineDeCaractere) grille xs
 
 ajouterChaineDeCaractere :: String -> Grille -> Grille
-ajouterChaineDeCaractere entree grille = zipWith merge entree grille
+ajouterChaineDeCaractere = zipWith merge
     where
         merge '.' colonne = colonne
         merge '0' colonne = Crane:colonne
-        merge x colonne = (charVersCouleur x):colonne
+        merge x colonne = charVersCouleur x : colonne
 
 charVersCouleur :: Char -> Couleur
 charVersCouleur '1' = Bleu
@@ -110,7 +109,7 @@ simplifierGrille grille = simplifierGrilleMarquee grilleMarquee 0
 simplifierGrilleMarquee :: [[(Bool, Couleur)]] -> Int -> (Grille, Int)
 simplifierGrilleMarquee grilleMarquee score = case premierElementNonMarque of
         (Just colonne, Just ligne) -> simplifierGrilleMarquee' $ parcourirGrilleAPartirDe colonne ligne grilleMarquee
-        otherwise -> (map (map snd) grilleMarquee, score)
+        _ -> (map (map snd) grilleMarquee, score)
     where
         premierElementNonMarque = (findIndex isJust colonneAvecElementNonMarques, msum colonneAvecElementNonMarques)
         colonneAvecElementNonMarques = map (findIndex (not . fst)) grilleMarquee
@@ -135,26 +134,26 @@ blocEstNonMarqueEtMemeCouleur couleur colonne ligne grille
     | ligne >= length blocs = (False, grille)
     | otherwise = case bloc of
         (_, Just Crane) -> (True, nouvelleGrilleSucces)
-        (False, Just x) -> if (x == couleur) then (False, nouvelleGrilleSucces) else (False, grille)
-        otherwise -> (False, grille)
+        (False, Just x) -> if x == couleur then (False, nouvelleGrilleSucces) else (False, grille)
+        _ -> (False, grille)
     where
         blocs = grille !! colonne
         bloc = blocs !! ligne
         nouvelleGrilleSucces = supprimerBloc colonne ligne grille
 
 supprimerBloc :: Colonne -> Ligne -> [[(Bool, Maybe Couleur)]] -> [[(Bool, Maybe Couleur)]]
-supprimerBloc = modifierElement (\_ -> (True, Nothing))
+supprimerBloc = modifierElement (const (True, Nothing))
 
 parcourir :: Couleur -> Colonne -> Ligne -> [[(Bool, Maybe Couleur)]] -> Int -> ([[(Bool, Maybe Couleur)]], Int)
 parcourir Crane _ _ grilleMarqueeMaybe nombreDeCoup = (grilleMarqueeMaybe, nombreDeCoup)
 parcourir couleurCourante colonne ligne grilleMarqueeMaybe nombreDeCoup
-    | grilleMarqueeMaybe /= nouvelleGrilleGauche = case (if craneAGauche then (nouvelleGrilleGauche, 0) else (parcourirAGauche nouvelleGrilleGauche)) of
+    | grilleMarqueeMaybe /= nouvelleGrilleGauche = case (if craneAGauche then (nouvelleGrilleGauche, 0) else parcourirAGauche nouvelleGrilleGauche) of
         (nouvelleGrille, nombreDeCoupAjoute) -> parcourir couleurCourante colonne ligne nouvelleGrille (nombreDeCoup + nombreDeCoupAjoute)
-    | grilleMarqueeMaybe /= nouvelleGrilleDroite = case (if craneADroite then (nouvelleGrilleDroite, 0) else (parcourirADroite nouvelleGrilleDroite)) of
+    | grilleMarqueeMaybe /= nouvelleGrilleDroite = case (if craneADroite then (nouvelleGrilleDroite, 0) else parcourirADroite nouvelleGrilleDroite) of
         (nouvelleGrille, nombreDeCoupAjoute) -> parcourir couleurCourante colonne ligne nouvelleGrille (nombreDeCoup + nombreDeCoupAjoute)
-    | grilleMarqueeMaybe /= nouvelleGrilleHaut = case (if craneEnHaut then (nouvelleGrilleHaut, 0) else (parcourirEnHaut nouvelleGrilleHaut)) of
+    | grilleMarqueeMaybe /= nouvelleGrilleHaut = case (if craneEnHaut then (nouvelleGrilleHaut, 0) else parcourirEnHaut nouvelleGrilleHaut) of
         (nouvelleGrille, nombreDeCoupAjoute) -> parcourir couleurCourante colonne ligne nouvelleGrille (nombreDeCoup + nombreDeCoupAjoute)
-    | grilleMarqueeMaybe /= nouvelleGrilleBas = case (if craneEnBas then (nouvelleGrilleBas, 0) else (parcourirEnBas nouvelleGrilleBas)) of
+    | grilleMarqueeMaybe /= nouvelleGrilleBas = case (if craneEnBas then (nouvelleGrilleBas, 0) else parcourirEnBas nouvelleGrilleBas) of
         (nouvelleGrille, nombreDeCoupAjoute) -> parcourir couleurCourante colonne ligne nouvelleGrille (nombreDeCoup + nombreDeCoupAjoute)
     | otherwise = (grilleMarqueeMaybe, nombreDeCoup)
     where
@@ -171,10 +170,10 @@ parcourir couleurCourante colonne ligne grilleMarqueeMaybe nombreDeCoup
 
 virerMaybe :: [[(Bool, Couleur)]] -> [[(Bool, Maybe Couleur)]] -> [[(Bool, Couleur)]]
 virerMaybe grilleCouleurs grilleMarques = map (map (\((_, couleur), (marque, _)) -> (marque, couleur))) megaZip
-    where megaZip = zipWith (zip) grilleCouleurs grilleMarques
+    where megaZip = zipWith zip grilleCouleurs grilleMarques
 
 virerNothings :: [[(Bool, Maybe Couleur)]] -> [[(Bool, Couleur)]]
-virerNothings grilleAvecMaybe = map transform' grilleAvecMaybe
+virerNothings = map transform'
 
 -- | Lift value in the 'Maybe' and abandon 'Nothing'.
 transform' :: [(a, Maybe b)] -> [(a, b)]
